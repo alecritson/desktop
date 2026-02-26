@@ -4,7 +4,7 @@ import path from 'path'
 
 // Inherit User's PATH in Process & ChildProcess
 import fixPath from 'fix-path';
-fixPath();
+if (process.platform !== 'win32') fixPath();
 
 const buildPath = path.resolve(import.meta.dirname, import.meta.env.MAIN_VITE_NATIVEPHP_BUILD_PATH);
 const defaultIcon = path.join(buildPath, 'icon.png')
