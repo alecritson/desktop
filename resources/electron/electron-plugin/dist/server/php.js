@@ -128,7 +128,9 @@ function callPhpSync(args, options, phpIniSettings = {}) {
     }
     return spawnSync(state.php, args, {
         cwd: options.cwd,
-        env: Object.assign(Object.assign({}, process.env), options.env)
+        env: Object.assign(Object.assign({}, process.env), options.env),
+        stdio: 'pipe',
+        windowsHide: true,
     });
 }
 function getArgumentEnv() {

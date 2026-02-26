@@ -176,7 +176,9 @@ function callPhpSync(args, options, phpIniSettings = {}) {
             env: {
                 ...process.env,
                 ...options.env
-            }
+            },
+            stdio: 'pipe',
+            windowsHide: true,
         }
     );
 }
