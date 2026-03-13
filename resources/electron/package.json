@@ -1,10 +1,10 @@
 {
-    "name": "nativephp",
-    "version": "2.0.0",
-    "description": "A NativePHP Electron application",
+    "name": "mymtgo-dev",
+    "version": "0.1.0",
+    "description": "An MTGO tracker",
     "main": "./out/main/index.js",
-    "author": "NativePHP",
-    "homepage": "https://nativephp.com",
+    "author": "anticloser",
+    "homepage": "https://mymtgo.com",
     "type": "module",
     "engines": {
         "node": ">=22.0.0"

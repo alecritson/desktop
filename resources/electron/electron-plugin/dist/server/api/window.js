@@ -167,8 +167,7 @@ router.post('/open', (req, res) => {
         });
     }
     const window = new BrowserWindow(Object.assign(Object.assign({ width: resizable ? (windowState === null || windowState === void 0 ? void 0 : windowState.width) || parseInt(width) : parseInt(width), height: resizable ? (windowState === null || windowState === void 0 ? void 0 : windowState.height) || parseInt(height) : parseInt(height), frame: frame !== undefined ? frame : true, x: (windowState === null || windowState === void 0 ? void 0 : windowState.x) || x, y: (windowState === null || windowState === void 0 ? void 0 : windowState.y) || y, minWidth: minWidth, minHeight: minHeight, maxWidth: maxWidth, maxHeight: maxHeight, show: false, title,
-        backgroundColor, transparent: transparency, alwaysOnTop,
-        resizable,
+        backgroundColor, transparent: transparency, resizable,
         movable,
         minimizable,
         maximizable,
@@ -183,9 +182,6 @@ router.post('/open', (req, res) => {
         autoHideMenuBar }, (process.platform === 'linux' ? { icon: state.icon } : {})), { webPreferences: mergePreferences(webPreferences), fullscreen,
         fullscreenable,
         kiosk }));
-    if (alwaysOnTop && alwaysOnTopLevel) {
-        window.setAlwaysOnTop(true, alwaysOnTopLevel);
-    }
     if ((process.env.NODE_ENV === 'development' || showDevTools === true) && showDevTools !== false) {
         window.webContents.openDevTools();
     }
@@ -202,6 +198,9 @@ router.post('/open', (req, res) => {
         window.setWindowButtonVisibility(windowButtonVisibility);
     }
     window.on('blur', () => {
+        if (alwaysOnTop) {
+            window.setAlwaysOnTop(true, alwaysOnTopLevel || 'floating');
+        }
         notifyLaravel('events', {
             event: 'Native\\Desktop\\Events\\Windows\\WindowBlurred',
             payload: [id],
@@ -277,6 +276,9 @@ router.post('/open', (req, res) => {
             return;
         }
         window.show();
+        if (alwaysOnTop) {
+            window.setAlwaysOnTop(true, alwaysOnTopLevel || 'floating');
+        }
     });
     window.webContents.on('did-fail-load', (event) => {
         console.error('failed to open window...', event);

@@ -280,7 +280,6 @@ router.post('/open', (req, res) => {
         title,
         backgroundColor,
         transparent: transparency,
-        alwaysOnTop,
         resizable,
         movable,
         minimizable,
@@ -300,10 +299,6 @@ router.post('/open', (req, res) => {
         fullscreenable,
         kiosk,
     });
-
-    if (alwaysOnTop && alwaysOnTopLevel) {
-        window.setAlwaysOnTop(true, alwaysOnTopLevel);
-    }
 
     if ((process.env.NODE_ENV === 'development' || showDevTools === true) && showDevTools !== false) {
         window.webContents.openDevTools();
@@ -326,6 +321,12 @@ router.post('/open', (req, res) => {
     }
 
     window.on('blur', () => {
+        // Re-apply alwaysOnTop on blur to prevent Windows from
+        // stripping the topmost flag when sibling windows are focused
+        if (alwaysOnTop) {
+            window.setAlwaysOnTop(true, alwaysOnTopLevel || 'floating');
+        }
+
         notifyLaravel('events', {
             event: 'Native\\Desktop\\Events\\Windows\\WindowBlurred',
             payload: [id],
@@ -417,8 +418,12 @@ router.post('/open', (req, res) => {
         if (state.noFocusOnRestart && window.isVisible()) {
             return;
         }
-        
+
         window.show();
+
+        if (alwaysOnTop) {
+            window.setAlwaysOnTop(true, alwaysOnTopLevel || 'floating');
+        }
     });
 
     window.webContents.on('did-fail-load', (event) => {
