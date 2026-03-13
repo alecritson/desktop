@@ -137,9 +137,9 @@ router.post('/show', (req, res) => {
 });
 
 router.post('/always-on-top', (req, res) => {
-    const { id, alwaysOnTop } = req.body;
+    const { id, alwaysOnTop, alwaysOnTopLevel } = req.body;
 
-    state.windows[id]?.setAlwaysOnTop(alwaysOnTop);
+    state.windows[id]?.setAlwaysOnTop(alwaysOnTop, alwaysOnTopLevel || null);
 
     res.sendStatus(200);
 });
@@ -229,6 +229,7 @@ router.post('/open', (req, res) => {
         closable,
         title,
         alwaysOnTop,
+        alwaysOnTopLevel,
         titleBarStyle,
         trafficLightPosition,
         windowButtonVisibility,
@@ -299,6 +300,10 @@ router.post('/open', (req, res) => {
         fullscreenable,
         kiosk,
     });
+
+    if (alwaysOnTop && alwaysOnTopLevel) {
+        window.setAlwaysOnTop(true, alwaysOnTopLevel);
+    }
 
     if ((process.env.NODE_ENV === 'development' || showDevTools === true) && showDevTools !== false) {
         window.webContents.openDevTools();

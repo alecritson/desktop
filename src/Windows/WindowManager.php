@@ -89,11 +89,12 @@ class WindowManager implements WindowManagerContract
         ]);
     }
 
-    public function alwaysOnTop($alwaysOnTop = true, $id = null): void
+    public function alwaysOnTop($alwaysOnTop = true, ?string $level = null, $id = null): void
     {
         $this->client->post('window/always-on-top', [
             'id' => $id ?? $this->detectId(),
             'alwaysOnTop' => $alwaysOnTop,
+            'alwaysOnTopLevel' => $level,
         ]);
     }
 

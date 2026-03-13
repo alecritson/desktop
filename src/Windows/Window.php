@@ -30,6 +30,8 @@ class Window
 
     protected bool $alwaysOnTop = false;
 
+    protected ?string $alwaysOnTopLevel = null;
+
     protected bool $showDevTools = false;
 
     protected bool $devToolsOpen = false;
@@ -218,9 +220,10 @@ class Window
         return $this;
     }
 
-    public function alwaysOnTop(bool $alwaysOnTop = true): self
+    public function alwaysOnTop(bool $alwaysOnTop = true, ?string $level = null): self
     {
         $this->alwaysOnTop = $alwaysOnTop;
+        $this->alwaysOnTopLevel = $level;
 
         return $this;
     }
@@ -412,6 +415,7 @@ class Window
             'transparency' => $this->transparent,
             'backgroundColor' => $this->backgroundColor,
             'alwaysOnTop' => $this->alwaysOnTop,
+            'alwaysOnTopLevel' => $this->alwaysOnTopLevel,
             'resizable' => $this->resizable,
             'movable' => $this->movable,
             'minimizable' => $this->minimizable,
