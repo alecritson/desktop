@@ -167,7 +167,8 @@ router.post('/open', (req, res) => {
         });
     }
     const window = new BrowserWindow(Object.assign(Object.assign({ width: resizable ? (windowState === null || windowState === void 0 ? void 0 : windowState.width) || parseInt(width) : parseInt(width), height: resizable ? (windowState === null || windowState === void 0 ? void 0 : windowState.height) || parseInt(height) : parseInt(height), frame: frame !== undefined ? frame : true, x: (windowState === null || windowState === void 0 ? void 0 : windowState.x) || x, y: (windowState === null || windowState === void 0 ? void 0 : windowState.y) || y, minWidth: minWidth, minHeight: minHeight, maxWidth: maxWidth, maxHeight: maxHeight, show: false, title,
-        backgroundColor, transparent: transparency, resizable,
+        backgroundColor, transparent: transparency, alwaysOnTop,
+        resizable,
         movable,
         minimizable,
         maximizable,
