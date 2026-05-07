@@ -227,6 +227,7 @@ router.post('/open', (req, res) => {
         minimizable,
         maximizable,
         closable,
+        hideOnClose = false,
         title,
         alwaysOnTop,
         alwaysOnTopLevel,
@@ -372,7 +373,13 @@ router.post('/open', (req, res) => {
         evt.preventDefault();
     });
 
-    window.on('close', () => {
+    window.on('close', (event) => {
+        if (hideOnClose && !state.appIsQuitting) {
+            event.preventDefault();
+            window.hide();
+            return;
+        }
+
         if (state.windows[id]) {
             delete state.windows[id];
         }
