@@ -101,8 +101,9 @@ router.post('/create', (req, res) => {
         // Create a tray icon
         const tray = new Tray(icon || state.icon.replace('icon.png', 'IconTemplate.png'));
 
-        // Set the context menu
-        tray.setContextMenu(buildMenu(contextMenu));
+        // Do NOT call tray.setContextMenu(): on Windows that turns left-click
+        // into "pop menu", which would suppress our MenuBarClicked event.
+        // The menu is popped manually from the right-click handler in eventsForTray().
         tray.setToolTip(tooltip);
         tray.setTitle(label);
 
@@ -200,8 +201,11 @@ function eventsForTray(tray, onlyShowContextMenu, contextMenu, shouldSendCreated
             },
         });
 
-        if (!onlyShowContextMenu) {
+        if (!onlyShowContextMenu && state.activeMenuBar) {
             state.activeMenuBar.hideWindow();
+        }
+
+        if (contextMenu) {
             tray.popUpContextMenu(buildMenu(contextMenu));
         }
     });
