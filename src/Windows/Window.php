@@ -46,6 +46,8 @@ class Window
 
     protected bool $closable = true;
 
+    protected bool $hideOnClose = false;
+
     protected bool $focusable = true;
 
     protected bool $skipTaskbar = false;
@@ -309,6 +311,13 @@ class Window
         return $this;
     }
 
+    public function hideOnClose(bool $hide = true): static
+    {
+        $this->hideOnClose = $hide;
+
+        return $this;
+    }
+
     public function invisibleFrameless(): self
     {
         return $this
@@ -421,6 +430,7 @@ class Window
             'minimizable' => $this->minimizable,
             'maximizable' => $this->maximizable,
             'closable' => $this->closable,
+            'hideOnClose' => $this->hideOnClose,
             'title' => $this->title,
             'fullscreen' => $this->fullscreen,
             'fullscreenable' => $this->fullscreenable,
