@@ -1,5 +1,11 @@
 import { app } from 'electron';
 import express from 'express';
+import state from '../state.js';
+
+app.on('before-quit', () => {
+    state.appIsQuitting = true;
+});
+
 const router = express.Router();
 
 router.post('/quit', (req, res) => {
@@ -96,6 +102,12 @@ router.post('/open-at-login', (req, res) => {
 router.get('/open-at-login', (req, res) => {
     res.json({
         open: app.getLoginItemSettings().openAtLogin,
+    });
+});
+
+router.get('/was-opened-as-hidden', (req, res) => {
+    res.json({
+        was_opened_as_hidden: app.getLoginItemSettings().wasOpenedAsHidden,
     });
 });
 

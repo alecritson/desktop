@@ -36,6 +36,7 @@ interface State {
     findWindow: (id: string) => BrowserWindow | null;
     noFocusOnRestart: boolean;
     dockBounce: number;
+    appIsQuitting: boolean;
 }
 
 function generateRandomString(length: number) {
@@ -65,6 +66,7 @@ export default {
     processes: {},
     windows: {},
     noFocusOnRestart: false,
+    appIsQuitting: false,
     findWindow(id: string) {
         return this.windows[id] || null;
     },
