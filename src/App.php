@@ -93,6 +93,11 @@ class App
 
     }
 
+    public function wasOpenedAsHidden(): bool
+    {
+        return (bool) $this->client->get('app/was-opened-as-hidden')->json('was_opened_as_hidden');
+    }
+
     public function openAtLogin(?bool $open = null): bool
     {
         if ($open === null) {

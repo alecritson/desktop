@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static array recentDocuments()
  * @method static void clearRecentDocuments()
  * @method static bool isRunningBundled()
+ * @method static bool wasOpenedAsHidden()
  * @method static bool openAtLogin(?bool $open = null)
  * @method static bool isEmojiPanelSupported()
  * @method static void showEmojiPanel()
