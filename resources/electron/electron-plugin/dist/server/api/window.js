@@ -151,7 +151,7 @@ function getWindowData(id) {
     };
 }
 router.post('/open', (req, res) => {
-    const { id, x, y, frame, width, height, minWidth, minHeight, maxWidth, maxHeight, focusable, skipTaskbar, hiddenInMissionControl, hasShadow, resizable, movable, minimizable, maximizable, closable, title, alwaysOnTop, alwaysOnTopLevel, titleBarStyle, trafficLightPosition, windowButtonVisibility, vibrancy, backgroundColor, transparency, showDevTools, fullscreen, fullscreenable, kiosk, autoHideMenuBar, webPreferences, zoomFactor, preventLeaveDomain, preventLeavePage, suppressNewWindows, } = req.body;
+    const { id, x, y, frame, width, height, minWidth, minHeight, maxWidth, maxHeight, focusable, skipTaskbar, hiddenInMissionControl, hasShadow, resizable, movable, minimizable, maximizable, closable, hideOnClose = false, title, alwaysOnTop, alwaysOnTopLevel, titleBarStyle, trafficLightPosition, windowButtonVisibility, vibrancy, backgroundColor, transparency, showDevTools, fullscreen, fullscreenable, kiosk, autoHideMenuBar, webPreferences, zoomFactor, preventLeaveDomain, preventLeavePage, suppressNewWindows, } = req.body;
     if (state.windows[id]) {
         state.windows[id].show();
         state.windows[id].focus();
@@ -239,7 +239,12 @@ router.post('/open', (req, res) => {
     window.on('page-title-updated', (evt) => {
         evt.preventDefault();
     });
-    window.on('close', () => {
+    window.on('close', (event) => {
+        if (hideOnClose && !state.appIsQuitting) {
+            event.preventDefault();
+            window.hide();
+            return;
+        }
         if (state.windows[id]) {
             delete state.windows[id];
         }

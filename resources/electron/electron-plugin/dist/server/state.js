@@ -37,6 +37,7 @@ export default {
     processes: {},
     windows: {},
     noFocusOnRestart: false,
+    appIsQuitting: false,
     findWindow(id) {
         return this.windows[id] || null;
     },

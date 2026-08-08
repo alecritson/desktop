@@ -59,7 +59,6 @@ router.post('/create', (req, res) => {
     const { width, height, url, label, alwaysOnTop, vibrancy, backgroundColor, transparency, icon, showDockIcon, onlyShowContextMenu, windowPosition, showOnAllWorkspaces, contextMenu, tooltip, resizable, webPreferences, } = req.body;
     if (onlyShowContextMenu) {
         const tray = new Tray(icon || state.icon.replace('icon.png', 'IconTemplate.png'));
-        tray.setContextMenu(buildMenu(contextMenu));
         tray.setToolTip(tooltip);
         tray.setTitle(label);
         eventsForTray(tray, onlyShowContextMenu, contextMenu, shouldSendCreatedEvent);
@@ -139,8 +138,10 @@ function eventsForTray(tray, onlyShowContextMenu, contextMenu, shouldSendCreated
                 bounds,
             },
         });
-        if (!onlyShowContextMenu) {
+        if (!onlyShowContextMenu && state.activeMenuBar) {
             state.activeMenuBar.hideWindow();
+        }
+        if (contextMenu) {
             tray.popUpContextMenu(buildMenu(contextMenu));
         }
     });
